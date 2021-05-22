@@ -1,7 +1,5 @@
 package com.yuukidach.ucount;
 
-import android.app.Application;
-
 /**
  * Created by yuukidach on 17-3-21.
  */
@@ -9,10 +7,15 @@ import android.app.Application;
 //存放一些全局使用的变量
 
 public class GlobalVariables {
+    //日期
     private static String mDate = "";
+    //小数点
     private static boolean mHasDot = false;
+    //money
     private static String mInputMoney = "";
+    //描述
     private static String mDescription = "";
+    //账本id
     private static int mBookId = 1;                         // 初始状态选择第一本账本
     private static int mBookPos = 0;
 

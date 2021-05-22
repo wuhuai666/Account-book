@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,14 +35,11 @@ public class ExpenseActivity extends AppCompatActivity {
         return "#" + R + G + B;
     }
 
-
+ //绘图 myDataView
     private MyDataView myDataView;
     private HashMap<String, Float> dataDegee = new HashMap<>();
     private HashMap<String, String> dataColor = new HashMap<>();
     private LinearLayout mLny;
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +62,7 @@ public class ExpenseActivity extends AppCompatActivity {
         mLny = findViewById(R.id.expense);
         //获取总金额
         float total = 0;
-
+                             //查询出第一本账本中的type=-1(支出)的money数  计算总金额
         List<IOItem> albumList = DataSupport.where("bookid = ? and type = ?",  String.valueOf(GlobalVariables.getmBookId()), "-1").find(IOItem.class);
 
         for (IOItem ioItem : albumList) {
@@ -75,16 +71,19 @@ public class ExpenseActivity extends AppCompatActivity {
         }
 
         if(total>0){
-
+           //初始化哈希Map    置空
             dataColor.clear();
             dataDegee.clear();
 
             for (IOItem ioItem : albumList) {
                 System.out.println(ioItem.getMoney());
-                //如果该条目花费已经存在
+                //如果该花费条目已经存在
+                //getDegree按比例转换为所占圆形的角度
                 if(dataDegee.get(ioItem.getName()) != null){
+                    //把支出消费的  消费名:价格(价格+原来累计的价格)  放入 HashMap里存储
                     dataDegee.put(ioItem.getName(), getDegree((float) ioItem.getMoney(), total) + dataDegee.get(ioItem.getName()));
                 }else{
+                    //   消费项目:价格
                     dataDegee.put(ioItem.getName(), getDegree((float) ioItem.getMoney(), total));
                     dataColor.put(ioItem.getName(), getRandColor());
                 }

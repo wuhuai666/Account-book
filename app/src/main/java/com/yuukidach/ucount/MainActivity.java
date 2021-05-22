@@ -74,14 +74,22 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     String sumDate = formatSum.format(new Date());
-
+    ///////////////////////////////////////////////////////////////////////
     // 为ioitem recyclerView设置滑动动作
+    /**
+     * ItemTouchHelper工具类可实现:
+     *                       滑动删除
+     *                       拖拽移动
+     *               需要Recyclerview和Callback
+     */
+    //传两个int类型的值   Callback是ItemTouchHelper里面的抽象类    重写了抽象类里面的onSwiped()和onMove()方法
     private ItemTouchHelper.Callback ioCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        //move拖拽移动
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             return false;
         }
-
+     //swipe(滑动)删除
         @Override
         public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
             // 获得滑动位置
@@ -104,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         LinearLayout sonView = (LinearLayout) viewHolder.itemView;
                         TextView grandsonTextView = (TextView) sonView.findViewById(R.id.iotem_date);
-                        // 判断是否应该显示时间
+                        // 判断是否应该显示时间     可见:显示时间     不可见:直接归回原来位置
                         if (sonView.findViewById(R.id.date_bar).getVisibility() == View.VISIBLE)
                             GlobalVariables.setmDate("");
                         else GlobalVariables.setmDate(ioAdapter.getItemDate(position));
@@ -114,12 +122,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
+    ///////////////////////////////////////////////////////////////////////
     private ItemTouchHelper ioTouchHelper = new ItemTouchHelper(ioCallback);
 
 
     // 为bookitem recyclerview添加动作
     private ItemTouchHelper.Callback bookCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+       //重写getMovementFlags方法  设置Recyclerview的滑动设置 这里:可以上下滑动 不能左右滑动
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             // 如果不想上下拖动，可以将 dragFlags = 0
@@ -138,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-
+       //重写onSwiped方法     设置滑动删除Recyclerview单个项
         @Override
         public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
             // 获得滑动位置
@@ -152,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //移除item及list
                         bookAdapter.removeItem(position);
                         // 刷新界面
                         onResume();
@@ -165,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
+         //创建ItemTouchHelper实例   传入一个CallBack对象实例
     private ItemTouchHelper bookTouchHelper = new ItemTouchHelper(bookCallback);
 //=============================================================================================================//
     @Override
@@ -174,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // litepal
+        // 开启litepal数据库
         Connector.getDatabase();
 
         // 获得包名和资源，方便后面的程序使用
@@ -225,15 +235,18 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         initBookItemList(this);
+        // 初始化收支项目显示
         initIoItemList(this);
-
+        //显示余额
         showBtn.setText("显示余额");
 
         BookItem tmp = DataSupport.find(BookItem.class, bookItemList.get(GlobalVariables.getmBookPos()).getId());
+        //对应当月支出
         monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
+        //对应当月收入
         monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
     }
-
+     //作为主活动
     @Override
     public void onBackPressed() {
         // super.onBackPressed();   不调用父类的方法
@@ -250,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                // 按住加号按钮以后，切换到AddItemActivity
+                // 按住加号按钮以后，切换到AddItemActivity  跳转到添加item页面
                 case R.id.add_button:
                     Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
                     startActivity(intent);
@@ -263,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                         showBtn.setText(sumString);
                     } else showBtn.setText("显示余额");
                     break;
+                    // 没有此功能                    后续添加
                 case R.id.add_book_button:
                     final BookItem bookItem = new BookItem();
                     final EditText book_title = new EditText(MainActivity.this);
@@ -309,26 +323,24 @@ public class MainActivity extends AppCompatActivity {
         setIoItemRecyclerView(context);
     }
 
-
+ //初始化首页标签列表   从bookItem表中把相应的标签拿出来
     public void initBookItemList(final Context context) {
         bookItemList = DataSupport.findAll(BookItem.class);
 
         if (bookItemList.isEmpty()) {
             BookItem bookItem = new BookItem();
-
             bookItem.saveBook(bookItem, 1, "默认账本");
             bookItem.setSumAll(0.0);
             bookItem.setSumMonthlyCost(0.0);
             bookItem.setSumMonthlyEarn(0.0);
             bookItem.setDate(sumDate);
             bookItem.save();
-
             bookItemList = DataSupport.findAll(BookItem.class);
         }
 
         setBookItemRecyclerView(context);
     }
-
+     //这里是选择系统相册图片
     public void selectPictureFromGallery(int id) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         // 设置选择类型为图片类型
@@ -340,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, SELECT_PIC4DRAWER);
 
     }
-
+//回调函数
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -352,7 +364,12 @@ public class MainActivity extends AppCompatActivity {
                 this.headerImg.setImageURI(uri1);
                 saveImageUri(SELECT_PIC4MAIN, uri1);
 
+
+                /* L369
+                *这里需要改进用户体验, 访问相册之前必须向用户申请权限,否则无法切换背景相册
+                 */
                 // 获取永久访问图片URI的权限
+                //ContentProvider.getUriWithoutUserId(uri)ContentResolver内部实现的原理
                 int takeFlags = data.getFlags();
                 takeFlags &=(Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -376,15 +393,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 利用SharedPreferences保存图片uri
+    //SharedPreferences持久化存储技术   用键值对的方式来存储数据
+    //传入图片id和uri
     public void saveImageUri(int id, Uri uri) {
         SharedPreferences pref = getSharedPreferences("image"+id, MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = pref.edit();
         prefEditor.putString("uri", uri.toString());
         prefEditor.apply();
     }
-
+//设置图片选为背景      疑问?
     public void setImageForHeaderAndBanner() {
         SharedPreferences pref1 = getSharedPreferences("image"+SELECT_PIC4MAIN, MODE_PRIVATE);
+        //默认值为""    得到String类型的uri
         String imageUri1 = pref1.getString("uri", "");
 
         if (!imageUri1.equals("")) {
@@ -400,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
             this.drawerBanner.setImageURI(contentUri);
         }
     }
-
+    //设置首页Recyclerview相应的参数  展示效果  设置适配器显示在屏幕上    下拉
     public void setIoItemRecyclerView(Context context) {
         // 用于存储recyclerView的日期
         GlobalVariables.setmDate("");
@@ -414,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
         ioItemRecyclerView.setAdapter(ioAdapter);
         ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
     }
-
+      //设置账本的浏览效果  ???
     public void setBookItemRecyclerView(Context context) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -440,13 +460,13 @@ public class MainActivity extends AppCompatActivity {
         //GlobalVariables.setmBookId(bookItemRecyclerView.getId());
     }
 
-//跳转至支出报表
+//跳转至支出报表 左上角
     public void Show_Expense(View view) {
         Intent intent = new Intent(MainActivity.this, ExpenseActivity.class);
         startActivity(intent);
     }
 
-//跳转至收入报表
+//跳转至收入报表   右上角
     public void Show_Income(View view) {
         Intent intent = new Intent(MainActivity.this, CanvasActivity.class);
         startActivity(intent);

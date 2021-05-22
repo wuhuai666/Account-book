@@ -116,13 +116,14 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         IOItem ioItem = mIOItemList.get(position);
         return ioItem.getTimeStamp();
     }
-
+    // 滑动删除相应的标签item后,一系列连锁反应
     public void removeItem(int position) {
         IOItem ioItem = mIOItemList.get(position);
         BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         int type = ioItem.getType();
         bookItem.setSumAll(bookItem.getSumAll() - ioItem.getMoney()*type);
-        // 判断收支类型
+        // 判断收支类型  <0支出               >0收入
+        //移出相应的item后,收入收出的总额也会相应的减少或增加
         if (type < 0) bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() - ioItem.getMoney());
         else bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() - ioItem.getMoney());
         bookItem.save();

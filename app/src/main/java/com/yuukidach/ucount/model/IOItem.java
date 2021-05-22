@@ -14,7 +14,13 @@ import org.litepal.crud.DataSupport;
 //单独的一个小项
 
 public class IOItem extends DataSupport {
+    /**
+     * 支出
+     */
     public final int TYPE_COST = -1;
+    /*
+    *收入
+     */
     public final int TYPE_EARN =  1;
 
     private int id;

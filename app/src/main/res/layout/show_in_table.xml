@@ -7,10 +7,6 @@
     android:gravity="center"
     android:background="#fff"
     tools:context=".ShowInTable">
-
-
-
-
     <TextView
         android:layout_marginLeft="20dp"
         android:layout_gravity="left"
@@ -19,32 +15,40 @@
         android:text="开发人员名单："
         android:textColor="#914c22"
         android:textSize="32sp"></TextView>
+
     <TextView
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="李    锐"
+        android:layout_gravity="center"
+        android:text="吴    淮"
         android:textColor="#000"
         android:textSize="28sp"></TextView>
     <TextView
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="张岩珂"
+        android:text="钟澳立"
         android:textColor="#000"
         android:textSize="28sp"></TextView>
     <TextView
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="吴    楚"
+        android:text="廖淯佳"
         android:textColor="#000"
         android:textSize="28sp"></TextView>
     <TextView
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="敖光成"
+        android:text="宋龙海"
+        android:textColor="#000"
+        android:textSize="28sp"></TextView>
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="肖柏青"
         android:textColor="#000"
         android:textSize="28sp"></TextView>
 

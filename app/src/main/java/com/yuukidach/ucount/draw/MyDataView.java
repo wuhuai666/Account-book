@@ -124,7 +124,7 @@ public class MyDataView extends View {
         int rectHeight = mPx * 6;
         int bottom = top+rectHeight;
         int blank = mPx;
-
+              //画左上角小矩形
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setTextSize(mPx * 4);
         for(String key : dataDegree.keySet()){
@@ -143,7 +143,7 @@ public class MyDataView extends View {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void darwPieChart() {
-
+//确定圆形百分比图的屏幕坐标
         int centerX = mWidth/2;
         int centerY = mHeight/2;
         int radius = mPx * 30;
@@ -155,14 +155,34 @@ public class MyDataView extends View {
         //根据颜色和度数绘制饼状图
         float startAngle = 0f;
         mPaint.setStyle(Paint.Style.FILL);
+/**                    绘制圆弧
+ * 【基本语法】public void drawArc (RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)
+ *
+ * 参数说明
+ *
+ * oval：圆弧所在的椭圆对象。
+ *
+ * startAngle：圆弧的起始角度。
+ *
+ * sweepAngle：圆弧的角度。
+ *
+ * useCenter：是否显示半径连线，true表示显示圆弧与圆心的半径连线，false表示不显示。
+ *
+ * paint：绘制时所使用的画笔。
+ *
+ *
+ */
 
         for(String key : dataDegree.keySet()){
+            //画扇形图的区域
             mPaint.setStyle(Paint.Style.FILL);
             mPaint.setColor(Color.parseColor(dataColor.get(key)));
             mCanvas.drawArc(left,top,right,bottom, startAngle,dataDegree.get(key),true,mPaint);
+            //画扇形图区域的白线
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setColor(Color.WHITE);
             mCanvas.drawArc(left,top,right,bottom, startAngle,dataDegree.get(key),true,mPaint);
+            //每次画完一个 更新开始角度
             startAngle += dataDegree.get(key);
         }
     }

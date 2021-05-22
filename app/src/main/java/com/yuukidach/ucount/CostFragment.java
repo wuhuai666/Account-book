@@ -31,13 +31,23 @@ public class CostFragment extends Fragment {
     private String[] titles = {"一般", "用餐", "零食", "交通", "充值", "购物", "娱乐", "住房", "饮料", "网购",
             "鞋帽", "护肤", "化妆", "电影", "转账", "浪费", "健身", "医疗", "旅游", "教育", "香烟", "酒水", "数码", "捐献",
             "家庭", "宠物", "服装", "日用", "水果", "母婴", "信用卡", "理财", "工作", "家具", "通信"};
+    /*
+    *  ViewPager 作用:  实现了左右切换当前的视图 view, 实现滑动切换的效果
+    *
+     */
     private ViewPager mPager;
+
     private List<View> mPagerList;
     private List<IOItem> mDatas;
+    //布局服务
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
+    //相对布局服务
     private RelativeLayout itemLayout;
+    //Extensible:可扩展的
+    // Indicator:标志,指针,迹象
+    //可扩展页面
     private ExtensiblePageIndicator extensiblePageIndicator;
 
     // 总的页数
@@ -114,6 +124,7 @@ public class CostFragment extends Fragment {
 
     // 获得AddItemActivity对应的控件，用来提示已选择的项目类型
     public void getBannerId() {
+        //对应第二个页面的第二个横幅   item text            price
         itemImage = (ImageView) getActivity().findViewById(R.id.chosen_image);
         itemTitle = (TextView) getActivity().findViewById(R.id.chosen_title);
         itemLayout = (RelativeLayout) getActivity().findViewById(R.id.have_chosen);
@@ -122,7 +133,9 @@ public class CostFragment extends Fragment {
     // 改变banner状态
     public void changeBanner(IOItem tmpItem) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
+        //Palette调色板 颜料
         Palette.Builder pb = new Palette.Builder(bm);
+        //设置最大的颜色数量
         pb.maximumColorCount(1);
 
 
@@ -130,13 +143,15 @@ public class CostFragment extends Fragment {
         itemTitle.setText(tmpItem.getName());
         itemImage.setTag(-1);                        // 保留图片资源属性，-1表示支出
         itemTitle.setTag(tmpItem.getSrcName());      // 保留图片资源名称作为标签，方便以后调用
-
         // 获取图片颜色并改变上方banner的背景色
+        //异步监听任务   分析的图片太大或颜色比较复杂的话,防止主线程卡死
         pb.generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
+                //Swatch样本对象  内部类   提供了一些获取最终颜色的方法
                 Palette.Swatch swatch = palette.getSwatches().get(0);
                 if (swatch != null) {
+                    //得到颜色的grb值
                     itemLayout.setBackgroundColor(swatch.getRgb());
                 } else {
                     Log.d(TAG, "changeBanner: ");
