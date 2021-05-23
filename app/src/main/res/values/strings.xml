@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">随心记账本</string>
+    <string name="app_name">老王记账本</string>
     <string name="show_balance">显示余额</string>
     <string name="monthly_income_title">当月收入</string>
     <string name="monthly_expenditure_title">当月支出</string>

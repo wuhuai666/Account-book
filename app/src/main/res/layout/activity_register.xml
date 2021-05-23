@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".user.RegisterActivity"
     android:padding="15dp"
-    android:background="#B2DFEE"
+    android:background="#EEF3FA"
     android:orientation="vertical">
 
     <TextView
+        android:layout_marginTop="150sp"
+        android:layout_marginLeft="80sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="欢迎来到用户注册页面"
@@ -17,11 +19,14 @@
         android:textSize="20sp"></TextView>
 
     <EditText
+        android:layout_marginTop="100sp"
         android:id="@+id/regist_uname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:lines="1"
+        android:gravity="center"
+        android:textColorHint="#000000"
         android:hint="请输入的用户名">
     </EditText>
 
@@ -30,6 +35,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入密码"
+        android:gravity="center"
+        android:inputType="textPassword"
+        android:textColorHint="#000000"
         android:lines="1"
         android:paddingTop="20dp">
     </EditText>
@@ -39,18 +47,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请再次输入密码"
+        android:gravity="center"
+        android:inputType="textPassword"
+        android:textColorHint="#000000"
         android:lines="1"
         android:paddingTop="20dp">
     </EditText>
 
     <Button
-        android:layout_margin="80dp"
+       android:layout_marginTop="50sp"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="确定注册"
+        android:layout_marginLeft="80sp"
         android:textSize="18sp"
         android:onClick="regist_Onclick"
         android:background="@drawable/bg_btn1"></Button>
-
-
 </LinearLayout>

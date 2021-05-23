@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.ChangePwdActivity"
-    android:background="#B2DFEE"
+    android:background="#EEF3FA"
     android:padding="15dp"
     android:orientation="vertical">
 
     <TextView
+        android:layout_marginTop="150sp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="欢迎来到修改密码页面"
@@ -17,11 +19,15 @@
         android:textSize="20sp"></TextView>
 
     <EditText
+        android:layout_marginTop="100sp"
         android:id="@+id/username01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:lines="1"
+        android:gravity="center"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
         android:hint="请输入用户名">
     </EditText>
 
@@ -31,6 +37,10 @@
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:lines="1"
+        android:gravity="center"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
+        android:inputType="textPassword"
         android:hint="请输入原密码">
     </EditText>
 
@@ -39,6 +49,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入新密码"
+        android:gravity="center"
+        android:textColorHint="#000000"
+        android:inputType="textPassword"
+        android:textColor="#000000"
         android:lines="1"
         android:paddingTop="20dp">
     </EditText>
@@ -48,14 +62,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请再次确认新密码"
+        android:inputType="textPassword"
         android:lines="1"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:paddingTop="20dp">
     </EditText>
 
     <Button
         android:id="@+id/commit_change"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="确定修改"
